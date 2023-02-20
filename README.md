@@ -127,7 +127,7 @@ The idea is if the entire dataset shows no particular patterns, so The data can 
 ### Model Stacking: 
 Stacking is one of the best method to improve your performance in datascience competitions. Many of the times, the positions change after private leaderboard is revealed. One who has fit a generic method that works well on the entire spacial distribution of data moves up the board. A single algorithm many not perform well on the entirity of the data however a stacked model with multiple algoritms performs better.
 
-### output Stacking:
+### Output Stacking:
 Many submissions that have performed well(>93%) have been stacked on multiple levels by Geometric Mean, Simple Mean etc. 
 
 The final output has shown a score of 93.299%
