@@ -85,4 +85,50 @@ Most of the features are descrete, this leaves the opputunity to treat them as c
 * Date Time features: 'last_sale_date', 'creation_date' were converted to datetime
 * New Date features: 'sale_year' and 'sale_month' were created. Also, the gap between creation and sale dates were computed. 
 * Date features to categorical: I have observed that these sales and creation had happened only on a few dates constituting <1% of total population. Hence converted the date variables to categorical and all dates have multiple records.
-* Descrete features: All numerical features with less than 100 unique records(0.02%). 
+* Descrete features: All numerical features with less than 100 unique records(0.02%). However, this method has not improved performance.
+* Distribution of Numerical Features: No particular distribution was initially shown but a log transformation has improved a bit. Log Transformation of NFT price has shown a chi-square distribution as expected. Log transformation has been the key for this problem and has improved the model performance significantly.
+* Outliers: There were a lot of outliers however I have not used any distance based algoritms. Moreover Tree based algorithms Like Gradient Boosting & XGBoost perform well on most of the cases.
+* Categorical Features: Across all the categories for all the variables, the median of NFT price was different indicating that there is a correlation between category and the prices associated with it.
+
+### Feature Engineering: 
+* Numerical features: Only log transformation with a correction to include zeros.
+* Categorical features: This is where I have gathered all my experiments and applied a bunch of methods. Fianlly used the below methods
+- One Hot Encoding: This is applied on 'openrarity_rank'& 'openrarity_max_rank'. Initially rare categories were clubbed, reducing 15556 categories to 2 and 11 to 9 respectively. Had this massive reduction not happened, I would not have used one hot for these features since it would not be parsimonious. 
+- Count Based Label Encoding: The method of ranking the distribution of population across the categories. Is one of the best method for features for both high and low number of features. A variant of this would be just a replacement of the category with it's population count.
+* New features: I have tried creating few features listed below but none of them have improved performance.
+- Total likes: avg_likes*n_tweets_in_range
+- Total Retweets: avg_retweets*n_tweets_in_range
+- Total Replies: avg_replies*n_tweets_in_range
+- Collection Count: collection count across NFT ID
+- NFT count: NFT distribution across each collection
+- total Collection Count: Population distribution of collection
+- total NFT count: Population Distribution of NFTs
+
+### Scaling
+Scaled using a standardization
+### Modeling Approach
+* Basic OLS fit: Just to get an understanding about importance of features through p-value, AIC/BIC. This will help to drop/transform features or try another encoding technique 
+* Linear Regression & regularizatiom: As expected, all of them were performing poorly
+* Tree based Methods: All methods are tuned to get the best hyper parameters on full set or subset of data based on time of execution
+- Decision Trees
+- Extra Trees
+- Gradient Boosting(has shown the best performance exlcuding stacking ~ 93.26%)
+- Light GBM
+- Random Forests
+- XGBoost
+* KNNs: initially this was performig well before log transformation(has given around 86% of acore)
+
+### New Method
+#### Panel Regression
+The idea is if the entire dataset shows no particular patterns, so The data can be broken down in to sets and fit algoritm that performs well in each set. Ideally this should be done on a feature that has multiple rows for a particular nft_id. However, I have decided to make clusters and then fit algos for each clusters. Clusters were decided using elbow method. 
+* Two approaches of Panel Regression:
+- Generic Panel Regression: A function is created to fit any algorithm but parameters are same for all the subsets.
+- Tuned Panel Regression: Here along with the above step, for each subset the hyper paramters are tuned(takes more time to execute)
+### Model Stacking: 
+Stacking is one of the best method to improve your performance in datascience competitions. Many of the times, the positions change after private leaderboard is revealed. One who has fit a generic method that works well on the entire spacial distribution of data moves up the board. A single algorithm many not perform well on the entirity of the data however a stacked model with multiple algoritms performs better.
+
+### output Stacking:
+Many submissions that have performed well(>93%) have been stacked on multiple levels by Geometric Mean, Simple Mean etc. 
+
+The final output has shown a score of 93.299%
+outputs from panel regressions are stacked by simple average.
