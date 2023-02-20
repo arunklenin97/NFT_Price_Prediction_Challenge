@@ -130,5 +130,5 @@ Stacking is one of the best method to improve your performance in datascience co
 ### Output Stacking:
 Many submissions that have performed well(>93%) have been stacked on multiple levels by Geometric Mean, Simple Mean etc. 
 
-The final output has shown a score of 93.299%
+The final output has shown a score of 93.63%
 outputs from panel regressions are stacked by simple average.
